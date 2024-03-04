@@ -2254,7 +2254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Version 0.2 [Development]
+  m_text: Version 0.3 [Development]
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8774,7 +8774,7 @@ MonoBehaviour:
   m_text: Game Over
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 5491794302583960259, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10011,7 +10011,7 @@ MonoBehaviour:
   m_text: TRY AGAIN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 5491794302583960259, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10601,15 +10601,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Final Score: ###'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
+  m_sharedMaterial: {fileID: 5491794302583960259, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4281034011
+  m_fontColor: {r: 0.106532566, g: 0.3962264, b: 0.16876312, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12595,7 +12595,7 @@ MonoBehaviour:
   m_text: QUIT TO MENU
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 5491794302583960259, guid: 1ae3b92b94adac94d83282ae31b7ae60, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

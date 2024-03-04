@@ -157,7 +157,7 @@ public class MenuSystem : MonoBehaviour
     public void RestartLevel()
     {
         levelLoadingScreen.SetActive(true);
-        gameOverMenu.SetActive(true);
+        gameOverMenu.SetActive(false);
         SceneManager.UnloadSceneAsync(selectedLevel);
         Time.timeScale = 1;
         IsPaused = false;
