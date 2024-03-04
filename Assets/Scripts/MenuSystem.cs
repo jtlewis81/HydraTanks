@@ -1,9 +1,6 @@
-
-using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 
 public class MenuSystem : MonoBehaviour
 {
@@ -17,8 +14,11 @@ public class MenuSystem : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private TextMeshProUGUI finalScore;
-    [SerializeField] private GameObject levelSelectionIndicator;
     [SerializeField] private GameObject[] levelSelectButtons;
+
+    private TextMeshProUGUI[] levelLabels;
+    private Color32 normalLevelLabelColor = new Color32(50, 50, 50, 255);
+    private Color32 selectedLevelLabelColor = new Color32(0, 135, 131, 255);
 
     public int Score { get; set; }
 
@@ -36,6 +36,16 @@ public class MenuSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        // not working for some reason ???
+        levelLabels = new TextMeshProUGUI[5];
+        for(int i = 0; i < levelLabels.Length; i++)
+        {
+            levelLabels[i] = levelSelectButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+        }
 
         SetSelectedLevel("");
     }
@@ -50,40 +60,44 @@ public class MenuSystem : MonoBehaviour
         {
             case "" :
                 {
-                    levelSelectionIndicator.SetActive(false);
+                    UnsetLevel();
                     break;
                 }
             case "Level 1" :
                 {
-                    levelSelectionIndicator.SetActive(true);
-                    levelSelectionIndicator.transform.position = levelSelectButtons[0].transform.position;
+                    UnsetLevel();
+                    levelLabels[0].color = selectedLevelLabelColor;
                     break;
                 }
             case "Level 2":
                 {
-                    levelSelectionIndicator.SetActive(true);
-                    levelSelectionIndicator.transform.position = levelSelectButtons[1].transform.position;
+                    UnsetLevel();
+                    levelLabels[1].color = selectedLevelLabelColor;
                     break;
                 }
             case "Level 3":
                 {
-                    levelSelectionIndicator.SetActive(true);
-                    levelSelectionIndicator.transform.position = levelSelectButtons[2].transform.position;
+                    UnsetLevel();
+                    levelLabels[2].color = selectedLevelLabelColor;
                     break;
                 }
             case "Level 4":
                 {
-                    levelSelectionIndicator.SetActive(true);
-                    levelSelectionIndicator.transform.position = levelSelectButtons[3].transform.position;
+                    UnsetLevel();
+                    levelLabels[3].color = selectedLevelLabelColor;
                     break;
                 }
             case "Level 5":
                 {
-                    levelSelectionIndicator.SetActive(true);
-                    levelSelectionIndicator.transform.position = levelSelectButtons[4].transform.position;
+                    UnsetLevel();
+                    levelLabels[4].color = selectedLevelLabelColor;
                     break;
                 }
-
+            default :
+                {
+                    UnsetLevel();
+                    break;
+                }
         }
     }
 
@@ -140,9 +154,27 @@ public class MenuSystem : MonoBehaviour
         gameOverMenu.SetActive(true);
     }
 
+    public void RestartLevel()
+    {
+        levelLoadingScreen.SetActive(true);
+        gameOverMenu.SetActive(true);
+        SceneManager.UnloadSceneAsync(selectedLevel);
+        Time.timeScale = 1;
+        IsPaused = false;
+        Invoke("disableLoadingScreen", 1f);
+        SceneManager.LoadSceneAsync(selectedLevel, LoadSceneMode.Additive);
+    }
+
     private void disableLoadingScreen()
     {
         levelLoadingScreen.SetActive(false);
     }
 
+    private void UnsetLevel()
+    {
+        foreach(var label in levelLabels)
+        {
+            label.color = normalLevelLabelColor;
+        }
+    }
 }

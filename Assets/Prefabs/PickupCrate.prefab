@@ -48,9 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crate: {fileID: 4389383295028134616}
   pickups:
-  - {fileID: 3504202385917094462, guid: 041683860f625f54ebfcfc0ac96adec7, type: 3}
-  - {fileID: 5039027316726111230, guid: b7878ba68a6284a478fc5ec2e324832f, type: 3}
   - {fileID: 4426645188583981597, guid: 50d03f60fd550184f8999718688a18d1, type: 3}
+  - {fileID: 5039027316726111230, guid: b7878ba68a6284a478fc5ec2e324832f, type: 3}
+  - {fileID: 3504202385917094462, guid: 041683860f625f54ebfcfc0ac96adec7, type: 3}
+  - {fileID: 4426645188583981597, guid: 6fccacfd268e35d4d88148e2c26cca70, type: 3}
+  - {fileID: 4426645188583981597, guid: 0bbab0aaf304e3e4bb928c2a47c60d09, type: 3}
+  - {fileID: 4426645188583981597, guid: ce7d13e8e44eac342933291accbe8015, type: 3}
   respawnTime: 15
 --- !u!61 &280493435562968785
 BoxCollider2D:

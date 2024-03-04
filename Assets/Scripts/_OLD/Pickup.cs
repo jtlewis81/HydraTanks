@@ -1,69 +1,89 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Pickup : MonoBehaviour
 {
-	[SerializeField]
-	private float timeToLive = 10f;
+    [SerializeField]
+    private float timeToLive = 10f;
 
-     private enum PickupType { MaxHP, Repair, FireRate };
+    private enum PickupType { MaxHP, Repair, FireRate, MoveSpeed, AimSpeed, Damage };
 
-     [SerializeField]
-     private PickupType type;
+    [SerializeField]
+    private PickupType type;
 
-	[SerializeField]
-	private float HPUpgradeModifier = 1.25f; // should be more than 1, but don't go nuts
-	[SerializeField]
-	private float fireRateModifier = 0.9f; // should be less than, but close to 1
+    private GameObject player;
+    private Damageable playerHealth;
+    private TankController playerController;
 
-	private GameObject player;
-	private Damageable playerHealth;
-	private TankController playerController;
+    private void Awake()
+    {
+        player = FindObjectOfType<PlayerInputHandler>().gameObject;
+        playerHealth = player.GetComponent<Damageable>();
+        playerController = player.GetComponent<TankController>();
+    }
 
-	private void Awake()
-	{
-		player = FindObjectOfType<PlayerInputHandler>().gameObject;
-		playerHealth = player.GetComponent<Damageable>();
-		playerController = player.GetComponent<TankController>();
-	}
+    private void Update()
+    {
+        timeToLive -= Time.deltaTime;
 
-	private void Update()
-	{
-		timeToLive -= Time.deltaTime;
+        if (timeToLive <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-		if (timeToLive <= 0)
-		{
-			Destroy(gameObject);
-		}
-	}
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            switch (type)
+            {
+                case PickupType.MaxHP:
+                    {
+                        playerHealth.MaxHP = playerHealth.MaxHP + playerController.HPUpgradeModifier;
+                        playerHealth.Heal((playerHealth.MaxHP - playerHealth.CurrHP) / 2); // give a half repair when upgrading max hp (could be optional if advanced settings were implemented?)
+                        Hud.Instance.UpgradeMaxHP();
+                        Destroy(gameObject);
+                        break;
+                    }
+                case PickupType.Repair:
+                    {
+                        playerHealth.Heal(playerHealth.MaxHP);
+                        Hud.Instance.UpdateHPAmount();
+                        Destroy(gameObject);
+                        break;
+                    }
+                case PickupType.FireRate:
+                    {
+                        playerController.UpgradeReloadSpeed();
+                        Hud.Instance.UpdateReloadRank();
+                        Destroy(gameObject);
+                        break;
+                    }
+                case PickupType.MoveSpeed:
+                    {
+                        playerController.UpgradeMoveSpeed();
+                        Hud.Instance.UpdateSpeedRank();
+                        Destroy(gameObject);
+                        break;
+                    }
+                case PickupType.AimSpeed:
+                    {
+                        playerController.UpgradeAimSpeed();
+                        Hud.Instance.UpdateAimRank();
+                        Destroy(gameObject);
+                        break;
+                    }
+                case PickupType.Damage:
+                    {
+                        playerController.UpgradeDamage();
+                        Hud.Instance.UpdateDamageRank();
+                        Destroy(gameObject);
+                        break;
+                    }
+                default: break;
+            }
+        }
+    }
 
-	private void OnTriggerEnter2D(Collider2D collider)
-	{
-		if(collider.gameObject.tag == "Player")
-		{
-			// if any more upgrades are added, consider changing to a switch method
-			if (type == PickupType.MaxHP)
-			{
-				playerHealth.MaxHP = (int)(playerHealth.MaxHP * HPUpgradeModifier);
-				playerHealth.Heal((playerHealth.MaxHP - playerHealth.CurrHP) / 2);
-				Hud.Instance.UpdateHP();
-				Destroy(gameObject);
-			}
-			else if (type == PickupType.Repair)
-			{
-				playerHealth.Heal(playerHealth.MaxHP);
-                Hud.Instance.UpdateHP();
-				Destroy(gameObject);
-			}
-			else if (type == PickupType.FireRate)
-			{
-				playerController.ReloadTimer *= fireRateModifier;
-				Hud.Instance.UpdateFireRate();
-				Destroy(gameObject);
-			}
-		}
-		
-	}
+
 }

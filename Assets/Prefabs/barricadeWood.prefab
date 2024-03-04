@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 25
+  hpCap: 25
   currHP: 0
   OnDead:
     m_PersistentCalls:

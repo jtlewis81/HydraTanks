@@ -9,19 +9,20 @@ public class Projectile : MonoBehaviour
 	private Rigidbody2D rb;
 
 	[SerializeField]
-	private float speed;
+	private float speed = 10;
 	[SerializeField]
-	private int damage;
+	private float damage;
 	[SerializeField]
-	private float range;
+	private float range = 6;
 
 	private Vector2 spawnPosition;
 	private float distanceTravelled;
 
 	public UnityEvent OnHit = new UnityEvent();
 
-	public void Initialize()
+	public void Initialize(float damage)
 	{
+		this.damage = damage;
 		spawnPosition = transform.position;
 		rb.velocity = transform.up * speed;
 	}

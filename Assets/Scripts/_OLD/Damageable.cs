@@ -6,9 +6,11 @@ public class Damageable : MonoBehaviour
     [SerializeField]
     private int maxHP;
     [SerializeField]
-    private int currHP;
+    private int hpCap;
+    [SerializeField]
+    private float currHP;
 
-    public int CurrHP
+    public float CurrHP
     {
         get { return currHP; }
         set
@@ -30,7 +32,7 @@ public class Damageable : MonoBehaviour
         currHP = MaxHP;
     }
 
-    public void Hit(int damage)
+    public void Hit(float damage)
     {
         CurrHP -= damage;
         if (currHP <= 0)
@@ -51,7 +53,7 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public void Heal(int addedHP)
+    public void Heal(float addedHP)
     {
         CurrHP += addedHP;
         CurrHP = Mathf.Clamp(currHP, 0, MaxHP);

@@ -5,6 +5,8 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
 
+    [SerializeField] private int levelNumber;
+
     [Header("Object References")]
     [SerializeField] private SpawnPoint[] enemySpawnpoints;
     [SerializeField] private SpawnPoint[] playerSpawnpoints;
@@ -14,9 +16,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int enemyCap = 8;
 
 
-    [Header("Editor Info [ DO NOT CHANGE ]")]
+    [Header("Editor Info [ DO NOT MODIFY! ]")]
     [SerializeField] private int killCount = 0;
 
+
+    public int LevelNumber { get => levelNumber; }
     public int EnemyCount { get; set; }
     public int KillCount { get => killCount; set => killCount = value; }
 
@@ -67,6 +71,7 @@ public class LevelManager : MonoBehaviour
 
     public void GameOver()
     {
+        SaveSystem.Instance.SubmitScore(levelNumber, killCount);
         IsGameOver = true;
         Invoke("OpenGameOverScreenAfterDelay", gameOverDelay);
         // run our save system to add score to high scores

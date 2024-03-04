@@ -35,9 +35,12 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        target = FindObjectOfType<PlayerInputHandler>().transform; // needs updated for multiplayer
+        if (!LevelManager.Instance.IsGameOver)
+        {
+            target = FindObjectOfType<PlayerInputHandler>().transform; // needs updated for multiplayer
 
-        InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
+            InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
+        }
     }
 
     void Update()

@@ -265,11 +265,22 @@ MonoBehaviour:
   turretBase: {fileID: 1034391990367437675}
   projectileSpawn: {fileID: 3084534879406073973}
   projectilePrefab: {fileID: 4671954817212894125, guid: 9c70ec5c4b9f3e34cac37758e540a378, type: 3}
+  damage: 10
   moveSpeed: 70
   turnSpeed: 140
   turretSpeed: 105
   reloadTimer: 1.25
+  hpUpgradeModifier: 0
+  reloadSpeedModifier: 1
+  moveSpeedModifier: 1
+  turnSpeedModifier: 1
+  turretSpeedModifier: 1
+  damageModifier: 1
   currentDelay: 0
+  reloadSpeedRank: 1
+  moveSpeedRank: 1
+  aimSpeedRank: 1
+  damageRank: 1
   OnShoot:
     m_PersistentCalls:
       m_Calls:
@@ -319,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 25
+  hpCap: 25
   currHP: 0
   OnDead:
     m_PersistentCalls:

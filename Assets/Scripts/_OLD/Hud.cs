@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,11 +6,17 @@ public class Hud : MonoBehaviour
 {
     public static Hud Instance;
 
-     public Text HP, FireRate, TanksDestroyed;
-     
-     private GameObject player;
-     private Damageable playerHealth;
-     private TankController playerTankController;
+    [SerializeField] private RectTransform hpBar;
+    [SerializeField] private Slider hpAmount;
+    [SerializeField] private GameObject[] ReloadRanks;
+    [SerializeField] private GameObject[] SpeedRanks;
+    [SerializeField] private GameObject[] AimRanks;
+    [SerializeField] private GameObject[] DamageRanks;
+    [SerializeField] private TextMeshProUGUI KillCount;
+
+    private GameObject player;
+    private Damageable playerHealth;
+    private TankController playerTankController;
 
     private void Awake()
     {
@@ -33,23 +40,60 @@ public class Hud : MonoBehaviour
         player = FindObjectOfType<PlayerInputHandler>().gameObject;
         playerHealth = player.GetComponent<Damageable>();
         playerTankController = player.GetComponent<TankController>();
-        UpdateHP();
-        UpdateFireRate();
+        UpdateHPAmount();
+        UpdateReloadRank();
+        UpdateSpeedRank();
+        UpdateAimRank();
+        UpdateDamageRank();
         UpdateTanksDestroyed();
     }
 
-	public void UpdateHP()
-	{
-          HP.text = playerHealth.CurrHP.ToString() + " / " + playerHealth.MaxHP.ToString();
-	}
+    public void UpdateHPAmount()
+    {
+        hpAmount.value = playerHealth.CurrHP / playerHealth.MaxHP;
+    }
 
-     public void UpdateFireRate()
-	{
-          FireRate.text = playerTankController.ReloadTimer.ToString() + " s";
-	}
+    public void UpgradeMaxHP()
+    {
+        hpBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, playerHealth.MaxHP);
+        UpdateHPAmount();
+    }
 
-	public void UpdateTanksDestroyed()
-	{
-          TanksDestroyed.text = LevelManager.Instance.KillCount.ToString();
-	}
+    public void UpdateReloadRank()
+    {
+        for(int i = 0; i < playerTankController.ReloadSpeedRank; i++)
+        {
+            ReloadRanks[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateSpeedRank()
+    {
+        for (int i = 0; i < playerTankController.MoveSpeedRank; i++)
+        {
+            SpeedRanks[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateAimRank()
+    {
+        for (int i = 0; i < playerTankController.AimSpeedRank; i++)
+        {
+            AimRanks[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateDamageRank()
+    {
+        for (int i = 0; i < playerTankController.DamageRank; i++)
+        {
+            DamageRanks[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateTanksDestroyed()
+    {
+        KillCount.text = LevelManager.Instance.KillCount.ToString();
+    }
+
 }

@@ -1,3 +1,5 @@
+using Cinemachine;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,25 +12,41 @@ public class TankController : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
 
     [Header("Settings")]
+    [SerializeField] private float damage = 10f;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float turnSpeed;
     [SerializeField] private float turretSpeed;
     [SerializeField] private float reloadTimer;
+    [SerializeField] private int hpUpgradeModifier = 25; // should be more than 1, but don't go nuts (additive)
+    [SerializeField] private float reloadSpeedModifier = 0.87f; // should be less than, but close to 1 (reduction multiplier)
+    [SerializeField] private float moveSpeedModifier = 1.1f; // should be more than, but close to 1 (incremental multiplier)
+    [SerializeField] private float turnSpeedModifier = 1.1f; // should be more than, but close to 1 (incremental multiplier)
+    [SerializeField] private float turretSpeedModifier = 1.1f; // should be more than, but close to 1 (incremental multiplier)
+    [SerializeField] private float damageModifier = 1.2f; // should be more than 1, but don't go crazy (incremental multiplier)
 
-    [Header("Editor Info [ DO NOT CHANGE ]")]
+    [Header("Editor Info [ DO NOT MODIFY! ]")]
     [SerializeField] private float currentDelay;
+    [SerializeField] private int reloadSpeedRank = 1;
+    [SerializeField] private int moveSpeedRank = 1;
+    [SerializeField] private int aimSpeedRank = 1;
+    [SerializeField] private int damageRank = 1;
 
     [Header("Events")]
     public UnityEvent OnShoot, OnCanShoot, OnCantShoot;
     public UnityEvent<float> OnReloading;
 
+    private CinemachineVirtualCamera vCam;
     private Collider2D[] tankColliders;
     private Vector2 movementVector;
     private Vector2 aimDirection;
     private Vector2 targetPosition;
     private bool canShoot = true;
 
-    public float ReloadTimer { get => reloadTimer; set => reloadTimer = value; }
+    public int HPUpgradeModifier { get => hpUpgradeModifier; }
+    public int ReloadSpeedRank { get => reloadSpeedRank; set => reloadSpeedRank = value; }
+    public int MoveSpeedRank { get => moveSpeedRank; set => moveSpeedRank = value; }
+    public int AimSpeedRank { get => aimSpeedRank; set => aimSpeedRank = value; }
+    public int DamageRank { get => damageRank; set => damageRank = value; }
 
     void Awake()
     {
@@ -38,6 +56,12 @@ public class TankController : MonoBehaviour
     private void Start()
     {
         OnReloading?.Invoke(currentDelay);
+
+        if(GetComponent<PlayerInputHandler>() != null)
+        {
+            vCam = FindAnyObjectByType<CinemachineVirtualCamera>();
+            vCam.m_Follow = transform;
+        }
     }
 
     private void Update()
@@ -113,14 +137,15 @@ public class TankController : MonoBehaviour
         if (canShoot)
         {
             canShoot = false;
-            currentDelay = ReloadTimer;
+            currentDelay = reloadTimer;
 
             GameObject projectile = Instantiate(projectilePrefab);
             projectile.transform.SetParent(FindObjectOfType<ObjectHolder>().transform);
             projectile.transform.position = projectileSpawn.position;
             projectile.transform.localRotation = projectileSpawn.rotation;
-            projectile.GetComponent<Projectile>().Initialize();
+            projectile.GetComponent<Projectile>().Initialize(damage);
 
+            // ignore self
             foreach (var collider in tankColliders)
             {
                 Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), collider);
@@ -130,5 +155,30 @@ public class TankController : MonoBehaviour
             OnReloading?.Invoke(currentDelay);
         }
 
+    }
+
+    public void UpgradeReloadSpeed()
+    {
+        ReloadSpeedRank++;
+        reloadTimer *= reloadSpeedModifier;
+    }
+
+    public void UpgradeMoveSpeed()
+    {
+        MoveSpeedRank++;
+        moveSpeed *= moveSpeedModifier;
+        turnSpeed *= turnSpeedModifier;
+    }
+
+    public void UpgradeAimSpeed()
+    {
+        AimSpeedRank++;
+        turretSpeed *= turretSpeedModifier;
+    }
+
+    public void UpgradeDamage()
+    {
+        DamageRank++;
+        damage *= damageModifier;
     }
 }
