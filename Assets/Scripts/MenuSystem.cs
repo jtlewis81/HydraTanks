@@ -1,24 +1,31 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuSystem : MonoBehaviour
 {
     public static MenuSystem Instance;
 
     [SerializeField] private GameObject mainMenuCanvas;
-    [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject levelSelectMenu;
-    [SerializeField] private GameObject highScoreScreen;
+    [SerializeField] private GameObject[] levelSelectButtons;
     [SerializeField] private GameObject levelLoadingScreen;
+    [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private TextMeshProUGUI finalScore;
-    [SerializeField] private GameObject[] levelSelectButtons;
+    [SerializeField] private GameObject highScoreScreen;
+
+    [Header("Default Selected Buttons")]
+    [SerializeField] private Button mainMenuLevelSelectButton;
+    [SerializeField] private Button pauseResumeButton;
+    [SerializeField] private Button gameOverRestartButton;
+
 
     private TextMeshProUGUI[] levelLabels;
-    private Color32 normalLevelLabelColor = new Color32(50, 50, 50, 255);
-    private Color32 selectedLevelLabelColor = new Color32(0, 135, 131, 255);
+    private Color32 normalLevelLabelColor = new Color32(51, 51, 51, 255);
+    private Color32 selectedLevelLabelColor = new Color32(255, 255, 255, 255);
 
     public int Score { get; set; }
 
@@ -46,7 +53,6 @@ public class MenuSystem : MonoBehaviour
         {
             levelLabels[i] = levelSelectButtons[i].GetComponentInChildren<TextMeshProUGUI>();
         }
-
         SetSelectedLevel("");
     }
 
@@ -121,6 +127,7 @@ public class MenuSystem : MonoBehaviour
         IsPaused = true;
         Time.timeScale = 0;
         pauseMenu.SetActive(true);
+        pauseResumeButton.Select();
     }
 
     public void ResumeGame()
@@ -139,6 +146,7 @@ public class MenuSystem : MonoBehaviour
         pauseMenu.SetActive(false);
         gameOverMenu.SetActive(false);
         mainMenuCanvas.SetActive(true);
+        mainMenuLevelSelectButton.Select();
     }
 
     public void QuitGame()
@@ -152,6 +160,7 @@ public class MenuSystem : MonoBehaviour
         IsPaused = true;
         finalScore.text = "Final Score: " + Score.ToString();
         gameOverMenu.SetActive(true);
+        gameOverRestartButton.Select();
     }
 
     public void RestartLevel()
@@ -175,6 +184,18 @@ public class MenuSystem : MonoBehaviour
         foreach(var label in levelLabels)
         {
             label.color = normalLevelLabelColor;
+        }
+    }
+
+    public void SelectButtonOnExitSettings()
+    {
+        if (IsPaused)
+        {
+            pauseResumeButton.Select();
+        }
+        else
+        {
+            mainMenuLevelSelectButton.Select();
         }
     }
 }
