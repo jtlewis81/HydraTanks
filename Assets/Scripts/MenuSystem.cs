@@ -8,6 +8,7 @@ public class MenuSystem : MonoBehaviour
     public static MenuSystem Instance;
 
     [SerializeField] private GameObject mainMenuCanvas;
+    [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelectMenu;
     [SerializeField] private GameObject[] levelSelectButtons;
     [SerializeField] private GameObject levelLoadingScreen;
@@ -19,6 +20,7 @@ public class MenuSystem : MonoBehaviour
 
     [Header("Default Selected Buttons")]
     [SerializeField] private Button mainMenuLevelSelectButton;
+    [SerializeField] private Button mainMenuSettingsButton;
     [SerializeField] private Button pauseResumeButton;
     [SerializeField] private Button gameOverRestartButton;
 
@@ -146,6 +148,7 @@ public class MenuSystem : MonoBehaviour
         pauseMenu.SetActive(false);
         gameOverMenu.SetActive(false);
         mainMenuCanvas.SetActive(true);
+        mainMenu.SetActive(true);
         mainMenuLevelSelectButton.Select();
     }
 
@@ -186,16 +189,18 @@ public class MenuSystem : MonoBehaviour
             label.color = normalLevelLabelColor;
         }
     }
-
     public void SelectButtonOnExitSettings()
     {
         if (IsPaused)
         {
+            pauseMenu.SetActive(true);
             pauseResumeButton.Select();
         }
         else
         {
-            mainMenuLevelSelectButton.Select();
+            mainMenu.SetActive(true);
+            mainMenuSettingsButton.Select();
         }
     }
+
 }
