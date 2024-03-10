@@ -22,6 +22,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private float turnSpeedModifier = 1.1f; // should be more than, but close to 1 (incremental multiplier)
     [SerializeField] private float turretSpeedModifier = 1.1f; // should be more than, but close to 1 (incremental multiplier)
     [SerializeField] private float damageModifier = 1.2f; // should be more than 1, but don't go crazy (incremental multiplier)
+    [SerializeField] private int upgradeRankCap = 5;
 
     [Header("Editor Info [ DO NOT MODIFY! ]")]
     [SerializeField] private float currentDelay;
@@ -46,6 +47,8 @@ public class TankController : MonoBehaviour
     public int MoveSpeedRank { get => moveSpeedRank; set => moveSpeedRank = value; }
     public int AimSpeedRank { get => aimSpeedRank; set => aimSpeedRank = value; }
     public int DamageRank { get => damageRank; set => damageRank = value; }
+
+    public int UpgradeRankCap => upgradeRankCap;
 
     void Awake()
     {

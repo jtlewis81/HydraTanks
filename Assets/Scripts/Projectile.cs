@@ -11,11 +11,10 @@ public class Projectile : MonoBehaviour
 	[SerializeField]
 	private float speed = 10;
 	[SerializeField]
-	private float damage;
-	[SerializeField]
 	private float range = 6;
 
-	private Vector2 spawnPosition;
+    private float damage;
+    private Vector2 spawnPosition;
 	private float distanceTravelled;
 
 	public UnityEvent OnHit = new UnityEvent();

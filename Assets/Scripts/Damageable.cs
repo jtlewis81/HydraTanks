@@ -21,6 +21,7 @@ public class Damageable : MonoBehaviour
     }
 
     public int MaxHP { get => maxHP; set => maxHP = value; }
+    public int HPCap { get => hpCap; private set { } }
 
     public UnityEvent OnDead;
     public UnityEvent<float> OnHPChange;
@@ -44,11 +45,16 @@ public class Damageable : MonoBehaviour
             }
             if (gameObject.GetComponent<PlayerInputHandler>())
             {
+                Hud.Instance.UpdateHPAmount();
                 LevelManager.Instance.GameOver();
             }
         }
         else
         {
+            if (gameObject.GetComponent<PlayerInputHandler>())
+            {
+                Hud.Instance.UpdateHPAmount();
+            }
             OnHit?.Invoke();
         }
     }

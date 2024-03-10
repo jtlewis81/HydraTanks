@@ -39,9 +39,13 @@ public class Pickup : MonoBehaviour
             {
                 case PickupType.MaxHP:
                     {
-                        playerHealth.MaxHP = playerHealth.MaxHP + playerController.HPUpgradeModifier;
-                        playerHealth.Heal((playerHealth.MaxHP - playerHealth.CurrHP) / 2); // give a half repair when upgrading max hp (could be optional if advanced settings were implemented?)
-                        Hud.Instance.UpgradeMaxHP();
+                        if(playerHealth.MaxHP < playerHealth.HPCap)
+                        {
+                            playerHealth.MaxHP = playerHealth.MaxHP + playerController.HPUpgradeModifier;
+                            // give a 50% repair of current damage with this upgrade (could be optional if advanced settings were implemented?)
+                            playerHealth.Heal((playerHealth.MaxHP - playerHealth.CurrHP) / 2);
+                            Hud.Instance.UpgradeMaxHP();
+                        }
                         Destroy(gameObject);
                         break;
                     }
@@ -54,29 +58,41 @@ public class Pickup : MonoBehaviour
                     }
                 case PickupType.FireRate:
                     {
-                        playerController.UpgradeReloadSpeed();
-                        Hud.Instance.UpdateReloadRank();
+                        if(playerController.ReloadSpeedRank < playerController.UpgradeRankCap)
+                        {
+                            playerController.UpgradeReloadSpeed();
+                            Hud.Instance.UpdateReloadRank();
+                        }
                         Destroy(gameObject);
                         break;
                     }
                 case PickupType.MoveSpeed:
                     {
-                        playerController.UpgradeMoveSpeed();
-                        Hud.Instance.UpdateSpeedRank();
+                        if (playerController.MoveSpeedRank < playerController.UpgradeRankCap)
+                        {
+                            playerController.UpgradeMoveSpeed();
+                            Hud.Instance.UpdateSpeedRank();
+                        }
                         Destroy(gameObject);
                         break;
                     }
                 case PickupType.AimSpeed:
                     {
-                        playerController.UpgradeAimSpeed();
-                        Hud.Instance.UpdateAimRank();
+                        if(playerController.AimSpeedRank < playerController.UpgradeRankCap)
+                        {
+                            playerController.UpgradeAimSpeed();
+                            Hud.Instance.UpdateAimRank();
+                        }
                         Destroy(gameObject);
                         break;
                     }
                 case PickupType.Damage:
                     {
-                        playerController.UpgradeDamage();
-                        Hud.Instance.UpdateDamageRank();
+                        if(playerController.DamageRank < playerController.UpgradeRankCap)
+                        {
+                            playerController.UpgradeDamage();
+                            Hud.Instance.UpdateDamageRank();
+                        }
                         Destroy(gameObject);
                         break;
                     }

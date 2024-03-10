@@ -40,7 +40,7 @@ public class Hud : MonoBehaviour
         player = FindObjectOfType<PlayerInputHandler>().gameObject;
         playerHealth = player.GetComponent<Damageable>();
         playerTankController = player.GetComponent<TankController>();
-        UpdateHPAmount();
+        UpgradeMaxHP();
         UpdateReloadRank();
         UpdateSpeedRank();
         UpdateAimRank();

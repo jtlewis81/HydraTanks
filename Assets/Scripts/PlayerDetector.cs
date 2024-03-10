@@ -46,7 +46,7 @@ public class PlayerDetector : MonoBehaviour
 
 	private bool CheckTargetVisibility()
 	{
-        int hits = collider.Raycast(Target.position - transform.position, hitObjects, TargetRange);
+        int hits = collider.Raycast(Target.position - transform.position, hitObjects, TargetRange, playerLM);
         if (hits > 0)
         {
 			return hitObjects[0].collider.gameObject.CompareTag("Player");
@@ -69,7 +69,7 @@ public class PlayerDetector : MonoBehaviour
 
 	private void DetectIfOutOfRange()
 	{
-		if (Target == null || Target.gameObject.activeSelf == false || Vector2.Distance(transform.position, Target.position) > TargetRange)
+		if (Target == null || !Target.gameObject.activeSelf || Vector2.Distance(transform.position, Target.position) > TargetRange)
 		{
 			Target = null;
 		}
