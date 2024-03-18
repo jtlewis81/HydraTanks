@@ -1,12 +1,20 @@
 using System;
 using System.IO;
-using TMPro;
 using UnityEngine;
+
+/// <summary>
+/// 
+///		Handles reading/writing to a save file for the game's high scores
+///		The data conforms to the ScoresSaveDataModel class
+/// 
+/// </summary>
 
 public class ScoresDataService : MonoBehaviour
 {
+    // the service is a singleton
     public static ScoresDataService Instance;
 
+    // path to the save file
     private string scoresFilepath = "/scores.txt";
 
     private void Awake()
@@ -23,12 +31,22 @@ public class ScoresDataService : MonoBehaviour
 
     private void Start()
     {
+        // create a new save file with scores of 0 for all levels if no file exists
+        // so something shows up in the high scores screen on the first launch
         if(!File.Exists(Application.persistentDataPath + scoresFilepath))
         {
             WriteData(new ScoresSaveDataModel());
         }
     }
 
+    /// <summary>
+    /// 
+    ///     Write data to the save file.
+    ///		Uses error catching to avoid program crashing.
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public bool WriteData(ScoresSaveDataModel data)
     {
         string path = Application.persistentDataPath + scoresFilepath;
@@ -64,6 +82,14 @@ public class ScoresDataService : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///
+    ///     Read data from the save file.
+    ///		Uses error catching to avoid program crashing.
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
     public ScoresSaveDataModel LoadData()
     {
         string path = Application.persistentDataPath + scoresFilepath;
@@ -84,7 +110,6 @@ public class ScoresDataService : MonoBehaviour
                                                                 int.Parse(rawData[3]),
                                                                 int.Parse(rawData[4]));
 
-
             return data;
         }
         catch (Exception e)
@@ -94,6 +119,13 @@ public class ScoresDataService : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    ///     Saves a new high score for the level that just ended.
+    /// 
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="newScore"></param>
     public void SubmitNewScore(int level, int newScore)
     {
         int currentLevelScore = GetScoreByLevel(level);
@@ -140,10 +172,19 @@ public class ScoresDataService : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    ///     Gets the high score for a given level from the save file
+    /// 
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
     private int GetScoreByLevel(int level)
     {
+        // get the save data
         ScoresSaveDataModel data = LoadData();
 
+        // return the score for the level parameter
         switch (level)
         {
             case 1:

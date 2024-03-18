@@ -1,24 +1,29 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// 
+///		Used to destroy audio clip clone objects after the clip has played
+/// 
+/// </summary>
 
 public class DestroyAudioHelper : MonoBehaviour
 {
-     private AudioSource source;
+    private AudioSource source;
 
-	private void Awake()
-	{
-		source = GetComponent<AudioSource>();
-	}
-	// Start is called before the first frame update
-	void Start()
+    private void Awake()
     {
-		StartCoroutine(WaitCoroutine());
+        source = GetComponent<AudioSource>();
     }
 
-	IEnumerator WaitCoroutine()
-	{
-		yield return new WaitForSeconds(source.clip.length);
-		Destroy(gameObject);
-	}
+    void Start()
+    {
+        StartCoroutine(WaitCoroutine());
+    }
+
+    IEnumerator WaitCoroutine()
+    {
+        yield return new WaitForSeconds(source.clip.length);
+        Destroy(gameObject);
+    }
 }

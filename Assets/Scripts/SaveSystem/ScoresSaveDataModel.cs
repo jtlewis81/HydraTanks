@@ -1,3 +1,8 @@
+/// <summary>
+/// 
+///     Data Model for saving high scores
+/// 
+/// </summary>
 public class ScoresSaveDataModel
 {
     public int Level1Score { get; set; }

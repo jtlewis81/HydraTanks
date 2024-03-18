@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6204467332525164602}
   - component: {fileID: 3389625012090234000}
   - component: {fileID: 6800096835575704803}
-  - component: {fileID: 7583393047609063858}
   - component: {fileID: 2825878858171040834}
   m_Layer: 8
   m_Name: barricadeWood
@@ -30,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7590731921275631245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.15, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,18 +119,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.00082835555}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5833333, y: 0.5833333}
+    oldSize: {x: 0.875, y: 0.875}
     newSize: {x: 0.56, y: 0.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5833333, y: 0.5833333}
+  m_Size: {x: 0.8848636, y: 0.8832069}
   m_EdgeRadius: 0
 --- !u!114 &6800096835575704803
 MonoBehaviour:
@@ -163,18 +162,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7583393047609063858}
-        m_TargetAssemblyTypeName: UpdateObstacles, Assembly-CSharp
-        m_MethodName: UpdateMap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnHPChange:
     m_PersistentCalls:
       m_Calls: []
@@ -184,18 +171,6 @@ MonoBehaviour:
   OnHeal:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7583393047609063858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7590731921275631245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01dabf60045bf404f899912cfb0940eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2825878858171040834
 MonoBehaviour:
   m_ObjectHideFlags: 0

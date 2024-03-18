@@ -164,8 +164,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 5067583877767409469}
   speed: 10
-  damage: 10
-  range: 6
   OnHit:
     m_PersistentCalls:
       m_Calls:
@@ -237,4 +235,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e312662ecc218f40901f470299b01cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPrefab: {fileID: 6556447297196725603, guid: 73e6ceaa6df3edf4e8bf329b2dff3336, type: 3}
+  gameObjectPrefab: {fileID: 6556447297196725603, guid: 73e6ceaa6df3edf4e8bf329b2dff3336, type: 3}

@@ -1,6 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// 
+///		Destroys game objects
+///		Used in the OnDead UnityEvent of an object's Damageable script
+/// 
+/// </summary>
 
 public class DestroyHelper : MonoBehaviour
 {

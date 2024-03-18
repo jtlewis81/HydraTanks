@@ -2,10 +2,19 @@ using System;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// 
+///		Handles reading/writing to a save file for the game's audio settings
+///		The data conforms to the SettingsSaveDataModel class
+/// 
+/// </summary>
+
 public class SettingsDataService : MonoBehaviour
 {
+	// the service is a singleton
 	public static SettingsDataService Instance;
 
+	// path to the save file
     private string settingsFilepath = "/settings.txt";
 
     private void Awake()
@@ -20,6 +29,14 @@ public class SettingsDataService : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// 
+    ///		Write data to the save file.
+    ///		Uses error catching to avoid program crashing.
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public bool WriteData(SettingsSaveDataModel data)
 	{
 		string path = Application.persistentDataPath + settingsFilepath;
@@ -42,8 +59,8 @@ public class SettingsDataService : MonoBehaviour
 
 			File.WriteAllText( path,
 							data.MasterVolume + "|" +
-							data.MusicVolume + "|" +
 							data.SfxVolume + "|" +
+							data.MusicVolume + "|" +
 							data.MusicIndex );
 
 			return true;
@@ -55,7 +72,15 @@ public class SettingsDataService : MonoBehaviour
 		}
 	}
 
-	public SettingsSaveDataModel LoadData()
+    /// <summary>
+    /// 
+    ///		Read data from the save file.
+    ///		Uses error catching to avoid program crashing.
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public SettingsSaveDataModel LoadData()
 	{
 		string path = Application.persistentDataPath + settingsFilepath;
 		

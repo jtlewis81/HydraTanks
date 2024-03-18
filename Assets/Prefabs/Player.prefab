@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e312662ecc218f40901f470299b01cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPrefab: {fileID: 4349126544716583544, guid: faa89880af0285b48b2cf282a5c02298, type: 3}
+  gameObjectPrefab: {fileID: 4349126544716583544, guid: faa89880af0285b48b2cf282a5c02298, type: 3}
 --- !u!1 &6560669211015109470
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +650,7 @@ MonoBehaviour:
   projectileSpawn: {fileID: 6560669210362398808}
   projectilePrefab: {fileID: 4671954817212894125, guid: 9c70ec5c4b9f3e34cac37758e540a378, type: 3}
   damage: 10
+  range: 6
   moveSpeed: 90
   turnSpeed: 150
   turretSpeed: 150

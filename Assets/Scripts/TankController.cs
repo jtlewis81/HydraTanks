@@ -2,6 +2,15 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// 
+///     Attached to every tank object.
+///     It contains references to tank parts, the projectile prefab,
+///       settings for the tank's movement, upgrade stats,
+///       and Unity Events that can have other scripts attached to them in the Unity editor.
+/// 
+/// </summary>
+
 public class TankController : MonoBehaviour
 {
     [Header("Object References")]
@@ -12,6 +21,7 @@ public class TankController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float damage = 10f;
+    [SerializeField] private int range = 6;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float turnSpeed;
     [SerializeField] private float turretSpeed;
@@ -37,52 +47,60 @@ public class TankController : MonoBehaviour
 
     private CinemachineVirtualCamera vCam;
     private Collider2D[] tankColliders;
+
+    // cached values
     private Vector2 movementVector;
     private Vector2 aimDirection;
     private Vector2 targetPosition;
     private bool canShoot = true;
 
+    // tank upgrade stat public accessors
     public int HPUpgradeModifier { get => hpUpgradeModifier; }
     public int ReloadSpeedRank { get => reloadSpeedRank; set => reloadSpeedRank = value; }
     public int MoveSpeedRank { get => moveSpeedRank; set => moveSpeedRank = value; }
     public int AimSpeedRank { get => aimSpeedRank; set => aimSpeedRank = value; }
     public int DamageRank { get => damageRank; set => damageRank = value; }
-
     public int UpgradeRankCap => upgradeRankCap;
 
     void Awake()
     {
+        // cache this tank's colliders so we can ignore them with the projectile for the physics system
         tankColliders = GetComponentsInParent<Collider2D>();
     }
 
     private void Start()
     {
-        OnReloading?.Invoke(currentDelay);
+        OnReloading?.Invoke(currentDelay); // trigger the unity event for any listeners to call their subscribed methods
 
-        if(GetComponent<PlayerInputHandler>() != null)
+        if(GetComponent<PlayerInputHandler>() != null) // this is for a player tank
         {
+            // set this to the virtual camera's follow target
             vCam = FindAnyObjectByType<CinemachineVirtualCamera>();
             vCam.m_Follow = transform;
         }
     }
 
+    // runs every frame
     private void Update()
     {
-        if (!canShoot)
+        if (!canShoot) // canShoot is set to false as soon as the tank fires
         {
+            // count down the reload timer
             OnCantShoot?.Invoke();
             currentDelay -= Time.deltaTime;
             OnReloading?.Invoke(currentDelay);
 
+            // allow the tank to fire
             if (currentDelay <= 0)
             {
                 canShoot = true;
                 OnCanShoot?.Invoke();
             }
         }
-
     }
 
+    // runs a set number of frames per second according to Unity settings
+    // best for object movement
     void FixedUpdate()
     {
         // tank body rotation
@@ -113,27 +131,56 @@ public class TankController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 
+    ///     Helper method for turret rotation
+    /// 
+    /// </summary>
+    /// <param name="angle"></param>    
     private void RotateToAngle(float angle)
     {
         float rotationStep = turretSpeed * Time.deltaTime;
         turretBase.rotation = Quaternion.RotateTowards(turretBase.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
     }
 
+    /// <summary>
+    /// 
+    ///     Assigned to the PlayerInput/EnemyAI script Unity Events in the Unity editor.
+    /// 
+    /// </summary>
+    /// <param name="moveVector"></param>
     public void HandleBodyMovement(Vector2 moveVector)
     {
         movementVector = moveVector;
     }
 
+    /// <summary>
+    /// 
+    ///     Assigned to the PlayerInput/EnemyAI script Unity Events in the Unity editor.
+    /// 
+    /// </summary>
+    /// <param name="aimDir"></param>
     public void HandleTurretRotation(Vector2 aimDir)
     {
         aimDirection = aimDir;        
     }
 
+    /// <summary>
+    /// 
+    ///     Assigned to the PlayerInput/EnemyAI script Unity Events in the Unity editor.
+    /// 
+    /// </summary>
+    /// <param name="targetPos"></param>
     public void HandleEnemyTurretRotation(Vector2 targetPos)
     {
         targetPosition = targetPos;
     }
 
+    /// <summary>
+    /// 
+    ///     Assigned to the PlayerInput/EnemyAI script Unity Events in the Unity editor.
+    /// 
+    /// </summary>
     public void HandleShoot()
     {
         if (canShoot)
@@ -145,7 +192,7 @@ public class TankController : MonoBehaviour
             projectile.transform.SetParent(FindObjectOfType<ObjectHolder>().transform);
             projectile.transform.position = projectileSpawn.position;
             projectile.transform.localRotation = projectileSpawn.rotation;
-            projectile.GetComponent<Projectile>().Initialize(damage);
+            projectile.GetComponent<Projectile>().Initialize(damage, range);
 
             // ignore self
             foreach (var collider in tankColliders)
@@ -159,12 +206,22 @@ public class TankController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 
+    ///     Called by the Pickup script to facilitate player upgrades (enemies cannot get upgrades)
+    /// 
+    /// </summary>
     public void UpgradeReloadSpeed()
     {
         ReloadSpeedRank++;
         reloadTimer *= reloadSpeedModifier;
     }
 
+    /// <summary>
+    /// 
+    ///     Called by the Pickup script to facilitate player upgrades (enemies cannot get upgrades)
+    /// 
+    /// </summary>
     public void UpgradeMoveSpeed()
     {
         MoveSpeedRank++;
@@ -172,12 +229,22 @@ public class TankController : MonoBehaviour
         turnSpeed *= turnSpeedModifier;
     }
 
+    /// <summary>
+    /// 
+    ///     Called by the Pickup script to facilitate player upgrades (enemies cannot get upgrades)
+    /// 
+    /// </summary>
     public void UpgradeAimSpeed()
     {
         AimSpeedRank++;
         turretSpeed *= turretSpeedModifier;
     }
 
+    /// <summary>
+    /// 
+    ///     Called by the Pickup script to facilitate player upgrades (enemies cannot get upgrades)
+    /// 
+    /// </summary>
     public void UpgradeDamage()
     {
         DamageRank++;

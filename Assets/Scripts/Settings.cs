@@ -3,10 +3,20 @@ using UnityEngine.Audio;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// 
+///		Attach to the SettingsManager in the Main Scene heirarchy.
+///		Handles adjustment of audio settings in the Settings Menu.
+///		Uses the SaveSystem to save/load settings.
+/// 
+/// </summary>
+
 public class Settings : MonoBehaviour
 {
+	// is a singleton
 	public static Settings Instance;
 
+	// UI objects to be assigned in the editor
 	[Header("Audio")]
 	[SerializeField] private AudioMixer volumeMixer;
 	[SerializeField] private Slider masterVolumeSlider;
@@ -28,6 +38,13 @@ public class Settings : MonoBehaviour
 
 	// /\  data that gets saved|loaded  /\
 
+	// default settings
+	private float defaultMasterVol = 0.25f;
+	private float defaultSFXVol = 1f;
+	private float defaultMusicVol = 1f;
+	private int defaultTrackIndex = 0;
+
+	// cache data
 	private SettingsSaveDataModel saveData;
 
 	private void Awake()
@@ -47,31 +64,40 @@ public class Settings : MonoBehaviour
 		// try to load saved settings
 		saveData = SaveSystem.Instance.LoadSettingsData();
 
-		if(saveData != null)
+		if(saveData != null) // apply loaded settings
 		{
 			Debug.Log("[ SETTINGS ] Applying saved settings...");
 			ApplySaveData(saveData);
-
-			// indicate that data loaded successfully?
 		}
-		else
+		else // use defaults
 		{
 			Debug.Log("[ SETTINGS ] Applying default settings...");
 			UseDefaultSettings();
 		}
 	}
 
+	/// <summary>
+	/// 
+	///		Assigned to an event on the Back button in the Settings menu to auto-save settings.
+	/// 
+	/// </summary>
 	public void SaveDataToFile()
 	{
 
 		saveData = new SettingsSaveDataModel(masterVolumeSliderValue,
-							musicVolumeSliderValue,
 							sfxVolumeSliderValue,
+							musicVolumeSliderValue,
 							currentMusicIndex);
 
 		SaveSystem.Instance.SaveSettingsToFile(saveData);
 	}
 
+	/// <summary>
+	/// 
+	///		Helper method to apply loaded setitngs to the game
+	/// 
+	/// </summary>
+	/// <param name="saveData"></param>
 	private void ApplySaveData(SettingsSaveDataModel saveData)
 	{
 
@@ -83,17 +109,27 @@ public class Settings : MonoBehaviour
 		InitializeSettings();
 	}
 
+	/// <summary>
+	/// 
+	///		Helper method for loading default 
+	/// 
+	/// </summary>
 	private void UseDefaultSettings()
 	{
 		// Default Settings
-		masterVolumeSliderValue = 0.25f;
-		sfxVolumeSliderValue = 1f;
-		musicVolumeSliderValue = 1f;
-		currentMusicIndex = 0;
+		masterVolumeSliderValue = defaultMasterVol;
+		musicVolumeSliderValue = defaultSFXVol;
+		sfxVolumeSliderValue = defaultMusicVol;
+		currentMusicIndex = defaultTrackIndex;
 
 		InitializeSettings();
 	}
 
+	/// <summary>
+	/// 
+	///		Helper method for matching Settings menu sliders to Audio Mixer values on startup 
+	/// 
+	/// </summary>
 	private void InitializeSettings()
 	{
 		// set volume sliders in settings panel
@@ -110,24 +146,48 @@ public class Settings : MonoBehaviour
 		SetMusicTrack(0);
 	}
 
+	/// <summary>
+	/// 
+	///		Set the master volume for the game
+	/// 
+	/// </summary>
+	/// <param name="value"></param>
 	public void SetMasterVolume(float value)
 	{
 		volumeMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20); // magic number 20 provided by SpeedTutor on YouTube
 		masterVolumeSliderValue = value;
 	}
 
-	public void SetMusicVolume(float value)
-	{
-		volumeMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20); // magic number 20 provided by SpeedTutor on YouTube
-		musicVolumeSliderValue = value;
-	}
-
+	/// <summary>
+	///	
+	///		Set the volume of the game's sound effects (SFX)
+	/// 
+	/// </summary>
+	/// <param name="value"></param>
 	public void SetSFXVolume(float value)
 	{
 		volumeMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20); // magic number 20 provided by SpeedTutor on YouTube
 		sfxVolumeSliderValue = value;
 	}
 
+	/// <summary>
+	/// 
+	///		Set the volume of the game's music.
+	/// 
+	/// </summary>
+	/// <param name="value"></param>
+	public void SetMusicVolume(float value)
+	{
+		volumeMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20); // magic number 20 provided by SpeedTutor on YouTube
+		musicVolumeSliderValue = value;
+	}
+
+	/// <summary>
+	/// 
+	///		Set the music track. Loops from one end of the track list to the other.
+	/// 
+	/// </summary>
+	/// <param name="increment"></param>
 	public void SetMusicTrack(int increment)
 	{
 		currentMusicIndex += increment;
@@ -149,14 +209,22 @@ public class Settings : MonoBehaviour
 		musicGenreText.text = musicTracks[currentMusicIndex].name;
 	}
 
-	// Play SFX Clips
-
-	// called from setup in inspector for menus
-	public void PlayButtonClick()
+    /// <summary>
+    /// 
+    ///		Called from Unity Events when a button is clicked in a menu.
+    /// 
+    /// </summary>
+    public void PlayButtonClick()
 	{
 		menuButtonClick.Play();
 	}
-	public void PlayBackButton()
+
+    /// <summary>
+    /// 
+    ///		Called from Unity Events when a button is clicked in a menu.
+    /// 
+    /// </summary>
+    public void PlayBackButton()
 	{
 		backButtonClick.Play();
 	}

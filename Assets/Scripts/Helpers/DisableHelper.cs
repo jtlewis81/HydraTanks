@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// 
+///		Used to disable the muzzle flash effect on tanks
+/// 
+/// </summary>
 
 public class DisableHelper : MonoBehaviour
 {
