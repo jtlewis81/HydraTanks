@@ -25,6 +25,7 @@ public class Settings : MonoBehaviour
 	[SerializeField] private AudioSource[] musicTracks;
 	[SerializeField] private AudioSource menuButtonClick;
 	[SerializeField] private AudioSource backButtonClick;
+	[SerializeField] private AudioSource sfxTestClip;
 
 	[Header("Text Fields")]
 	[SerializeField] private TextMeshProUGUI musicGenreText;
@@ -227,5 +228,15 @@ public class Settings : MonoBehaviour
     public void PlayBackButton()
 	{
 		backButtonClick.Play();
+	}
+
+    /// <summary>
+    /// 
+    ///		Called from Unity Events when a button is clicked in a menu.
+    /// 
+    /// </summary>
+    public void PlaySFXTest()
+	{
+		sfxTestClip.Play();
 	}
 }
